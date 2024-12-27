@@ -9,7 +9,7 @@
 use crate::util::iter::*;
 use crate::util::parse::*;
 
-const SIZE: usize = 22;
+const SIZE: usize = 25;
 
 pub fn parse(input: &str) -> Vec<u32> {
     let mut cube = vec![0; SIZE * SIZE * SIZE];
