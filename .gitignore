@@ -7,3 +7,7 @@ Cargo.lock
 
 # Don't commit input files
 input
+
+pyvenv.cfg
+Lib
+Scripts
