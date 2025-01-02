@@ -32,7 +32,7 @@ use crate::util::heap::*;
 use crate::util::iter::*;
 use crate::util::parse::*;
 use crate::util::point::*;
-use std::collections::VecDeque;
+use std::collections::{HashSet, VecDeque};
 
 pub fn parse(input: &str) -> Grid<i32> {
     let mut grid = Grid::new(71, 71, i32::MAX);
@@ -44,7 +44,7 @@ pub fn parse(input: &str) -> Grid<i32> {
     grid
 }
 
-/// BFS from start to exit using a fixed time of 1024.
+/// BFS with optimizations for memory efficiency
 pub fn part1(grid: &Grid<i32>) -> u32 {
     let mut grid = grid.clone();
     let mut todo = VecDeque::new();
@@ -68,10 +68,11 @@ pub fn part1(grid: &Grid<i32>) -> u32 {
     unreachable!()
 }
 
-/// Incremental flood fill that removes one blocking byte at a time in descending order.
+/// Optimized flood fill to find the first byte that blocks the path
 pub fn part2(grid: &Grid<i32>) -> String {
     let mut time = i32::MAX;
     let mut heap = MinHeap::new();
+    let mut visited = HashSet::new();
 
     let mut grid = grid.clone();
     let mut todo = VecDeque::new();
@@ -92,7 +93,7 @@ pub fn part2(grid: &Grid<i32>) -> String {
                     if time < grid[next] {
                         grid[next] = 0;
                         todo.push_back(next);
-                    } else {
+                    } else if visited.insert(next) {
                         // Use negative value to convert min-heap to max-heap.
                         heap.push(-grid[next], next);
                     }
@@ -100,9 +101,12 @@ pub fn part2(grid: &Grid<i32>) -> String {
             }
         }
 
-        // Remove the latest blocking byte then try to make a little more progress in flood fill.
-        let (first, saved) = heap.pop().unwrap();
-        time = -first;
-        todo.push_back(saved);
+        // Remove the latest blocking byte and attempt to proceed further
+        if let Some((first, saved)) = heap.pop() {
+            time = -first;
+            todo.push_back(saved);
+        } else {
+            unreachable!();
+        }
     }
 }

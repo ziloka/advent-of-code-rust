@@ -1,7 +1,7 @@
 //! Implementation of the full Intcode computer specification.
 use std::collections::VecDeque;
 
-const EXTRA: usize = 2_000;
+const EXTRA: usize = 3_000;
 
 pub enum State {
     Input,

@@ -16,7 +16,7 @@ pub fn parse(input: &str) -> Vec<i64> {
 
 pub fn part1(input: &[i64]) -> usize {
     let mut computer = Computer::new(input);
-    let mut tiles = [0; 44 * 20];
+    let mut tiles = [0; 44 * 25];
 
     loop {
         let State::Output(x) = computer.run() else {
@@ -39,7 +39,7 @@ pub fn part2(input: &[i64]) -> i64 {
     modified[0] = 2;
 
     let mut computer = Computer::new(&modified);
-    let mut tiles = [0; 44 * 20];
+    let mut tiles = [0; 44 * 25];
     let mut score = 0;
     let mut blocks = score;
     let mut ball: i64 = 0;
